@@ -2,26 +2,12 @@ import requests
 from bs4 import BeautifulSoup
 import html
 
-API_KEY = "live_9526028cb44c00533bc77bb654b2a6"
-
-# Busca lista de todos os times e salva nome/brasão
-def fetch_times():
-    res = requests.get(
-        "https://api.api-futebol.com.br/v1/times",
-        headers={"Authorization": f"Bearer {API_KEY}"}
-    )
-    times = res.json()
-    # Cria um dicionário: nome -> escudo
-    return {t["nome_popular"].lower(): t["escudo"] for t in times}
-
 def fetch_jogos():
     url = "https://mantosdofutebol.com.br/guia-de-jogos-tv-hoje-ao-vivo/"
     headers = {"User-Agent": "Mozilla/5.0"}
     res = requests.get(url, headers=headers)
-    res.encoding = 'utf-8'
+    res.encoding = 'utf-8'  # garante codificação correta
     soup = BeautifulSoup(res.text, 'html.parser')
-
-    escudos = fetch_times()
 
     jogos = []
     for h in soup.find_all(['h2', 'h3']):
@@ -32,30 +18,21 @@ def fetch_jogos():
             if next_p and ('Canal:' in next_p.text or 'Canais:' in next_p.text):
                 canal = next_p.get_text(strip=True)
                 canal = canal.replace('Canais:', '').replace('Canal:', '').strip()
-
-            # Extrair nomes dos times tentando dividir pelo separador
-            separador = ' x ' if ' x ' in title else '–'
-            time1, time2 = [t.strip().lower() for t in title.split(separador, 1)]
-
-            # Obter brasões se existirem
-            brasao1 = escudos.get(time1, '')
-            brasao2 = escudos.get(time2, '')
-
-            jogos.append((html.escape(title), html.escape(canal), brasao1, brasao2, time1.title(), time2.title()))
+            # protege contra caracteres especiais no HTML
+            title = html.escape(title)
+            canal = html.escape(canal)
+            jogos.append((title, canal))
     return jogos
 
 def gerar_html(jogos):
     bloco = ""
-    for titulo, canal, escudo1, escudo2, time1, time2 in jogos:
-        bloco += '<div class="game">'
-        if escudo1:
-            bloco += f'<img class="brasao" src="{escudo1}" alt="{time1}"> '
-        bloco += f'{time1} <strong>vs</strong> '
-        if escudo2:
-            bloco += f'<img class="brasao" src="{escudo2}" alt="{time2}"> '
-        bloco += f'{time2}'
-        bloco += f'<div class="canal">Canal: {canal}</div>'
-        bloco += '</div>\n'
+    for jogo, canal in jogos:
+        bloco += (
+            '<div class="game">'
+            f'<div class="info">{jogo}</div>'
+            f'<div class="canal">Canal: {canal}</div>'
+            '</div>\n'
+        )
     return bloco
 
 if __name__ == "__main__":
