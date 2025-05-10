@@ -33,12 +33,13 @@
       text-shadow: 2px 2px 4px #000;
     }
 
+    /* Filtros */
     .filters {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
-    select, button {
+    select {
       background-color: #222;
       color: #FFD700;
       border: 2px solid #FFD700;
@@ -51,7 +52,7 @@
       transition: 0.3s ease;
     }
 
-    select:hover, button:hover {
+    select:hover {
       background-color: #333;
       box-shadow: 0 6px 14px rgba(255, 215, 0, 0.4);
       transform: scale(1.03);
@@ -64,7 +65,6 @@
       margin-bottom: 16px;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.4);
-      display: none;
     }
 
     .info {
@@ -92,63 +92,14 @@
       <div class="filters">
         <select id="filtro-campeonato">
           <option value="todos">Todos os Campeonatos</option>
-          <option value="Brasileirão">Brasileirão</option>
-          <option value="Premier League">Premier League</option>
-          <option value="La Liga">La Liga</option>
-          <option value="Bundesliga">Bundesliga</option>
-          <option value="Serie A">Serie A</option>
         </select>
-
         <select id="filtro-canal">
           <option value="todos">Todos os Canais</option>
-          <option value="Globo">Globo</option>
-          <option value="Sportv">Sportv</option>
-          <option value="Premiere">Premiere</option>
-          <option value="ESPN">ESPN</option>
-          <option value="Disney+">Disney+</option>
-          <option value="YouTube">YouTube</option>
         </select>
-
-        <button onclick="mostrarJogos()">Ver Jogos</button>
       </div>
 
-      <div id="jogos-container">
-        <!-- Exemplo de jogos -->
-        <div class="game" data-campeonato="Brasileirão" data-canal="Premiere">
-          <div class="info">16h00 – Fortaleza x Juventude – Brasileirão</div>
-          <div class="canal">Canal: Premiere</div>
-        </div>
-        <div class="game" data-campeonato="Premier League" data-canal="ESPN">
-          <div class="info">11h00 – Manchester City x Liverpool – Premier League</div>
-          <div class="canal">Canal: ESPN</div>
-        </div>
-        <div class="game" data-campeonato="La Liga" data-canal="Disney+">
-          <div class="info">13h30 – Girona x Villarreal – La Liga</div>
-          <div class="canal">Canal: Disney+</div>
-        </div>
-        <div class="game" data-campeonato="Bundesliga" data-canal="YouTube">
-          <div class="info">10h30 – Bayern x Dortmund – Bundesliga</div>
-          <div class="canal">Canal: YouTube</div>
-        </div>
-      </div>
+      {{JOGOS_AQUI}}
     </div>
   </div>
-
-  <script>
-    function mostrarJogos() {
-      const campeonato = document.getElementById("filtro-campeonato").value.toLowerCase();
-      const canal = document.getElementById("filtro-canal").value.toLowerCase();
-      const jogos = document.querySelectorAll(".game");
-
-      jogos.forEach(jogo => {
-        const camp = jogo.getAttribute("data-campeonato").toLowerCase();
-        const can = jogo.getAttribute("data-canal").toLowerCase();
-        const mostra =
-          (campeonato === "todos" || camp.includes(campeonato)) &&
-          (canal === "todos" || can.includes(canal));
-        jogo.style.display = mostra ? "block" : "none";
-      });
-    }
-  </script>
 </body>
 </html>
