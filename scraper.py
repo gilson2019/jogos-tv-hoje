@@ -21,7 +21,7 @@ def fetch_jogos():
 def gerar_html(jogos):
     bloco = ""
     for jogo, canal in jogos:
-        bloco += f'<div class="game"><div class="info">{jogo}</div><div class="canal">Canal: {canal}</div></div>\\n'
+        bloco += f'<div class="game"><div class="info">{jogo}</div><div class="canal">Canal: {canal}</div></div>'
     return bloco
 
 if __name__ == "__main__":
