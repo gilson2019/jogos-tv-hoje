@@ -1,10 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
+import html
 
 def fetch_jogos():
     url = "https://mantosdofutebol.com.br/guia-de-jogos-tv-hoje-ao-vivo/"
     headers = {"User-Agent": "Mozilla/5.0"}
     res = requests.get(url, headers=headers)
+    res.encoding = 'utf-8'  # garante codificação correta
     soup = BeautifulSoup(res.text, 'html.parser')
 
     jogos = []
@@ -16,6 +18,9 @@ def fetch_jogos():
             if next_p and ('Canal:' in next_p.text or 'Canais:' in next_p.text):
                 canal = next_p.get_text(strip=True)
                 canal = canal.replace('Canais:', '').replace('Canal:', '').strip()
+            # protege contra caracteres especiais no HTML
+            title = html.escape(title)
+            canal = html.escape(canal)
             jogos.append((title, canal))
     return jogos
 
