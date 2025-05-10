@@ -14,19 +14,27 @@ def fetch_jogos():
             canal = "Canal não informado"
             next_p = h.find_next_sibling('p')
             if next_p and ('Canal:' in next_p.text or 'Canais:' in next_p.text):
-                canal = next_p.get_text(strip=True).replace('Canais:', '').replace('Canal:', '').strip()
+                canal = next_p.get_text(strip=True)
+                canal = canal.replace('Canais:', '').replace('Canal:', '').strip()
             jogos.append((title, canal))
     return jogos
 
 def gerar_html(jogos):
     bloco = ""
     for jogo, canal in jogos:
-        bloco += f'<div class="game"><div class="info">{jogo}</div><div class="canal">Canal: {canal}</div></div>'
+        bloco += (
+            '<div class="game">'
+            f'<div class="info">{jogo}</div>'
+            f'<div class="canal">Canal: {canal}</div>'
+            '</div>\n'
+        )
     return bloco
 
 if __name__ == "__main__":
     with open("template.html", "r", encoding="utf-8") as f:
         template = f.read()
+
     html_final = template.replace("{{JOGOS_AQUI}}", gerar_html(fetch_jogos()))
+
     with open("index.html", "w", encoding="utf-8") as f:
         f.write(html_final)
