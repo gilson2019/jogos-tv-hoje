@@ -35,10 +35,10 @@
 
     .filters {
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    select {
+    select, button {
       background-color: #222;
       color: #FFD700;
       border: 2px solid #FFD700;
@@ -51,7 +51,7 @@
       transition: 0.3s ease;
     }
 
-    select:hover {
+    select:hover, button:hover {
       background-color: #333;
       box-shadow: 0 6px 14px rgba(255, 215, 0, 0.4);
       transform: scale(1.03);
@@ -64,6 +64,7 @@
       margin-bottom: 16px;
       border-radius: 8px;
       box-shadow: 0 0 8px rgba(0,0,0,0.4);
+      display: none;
     }
 
     .info {
@@ -92,24 +93,10 @@
         <select id="filtro-campeonato">
           <option value="todos">Todos os Campeonatos</option>
           <option value="Brasileirão">Brasileirão</option>
-          <option value="Brasileirão Série B">Brasileirão Série B</option>
-          <option value="Brasileirão Série C">Brasileirão Série C</option>
-          <option value="Brasileirão Feminino">Brasileirão Feminino</option>
           <option value="Premier League">Premier League</option>
           <option value="La Liga">La Liga</option>
-          <option value="La Liga 2">La Liga 2</option>
-          <option value="Serie A">Serie A</option>
           <option value="Bundesliga">Bundesliga</option>
-          <option value="2.Bundesliga">2.Bundesliga</option>
-          <option value="Ligue 1">Ligue 1</option>
-          <option value="Liga Portugal">Liga Portugal</option>
-          <option value="Ekstraklasa">Ekstraklasa</option>
-          <option value="Copa do Mundo Areia">Copa do Mundo de Areia</option>
-          <option value="Jupiler Pro League">Jupiler Pro League</option>
-          <option value="Süperlig">Süperlig</option>
-          <option value="NWSL">NWSL</option>
-          <option value="Liga Futsal">Liga Futsal</option>
-          <option value="Campeonato Argentino">Campeonato Argentino</option>
+          <option value="Serie A">Serie A</option>
         </select>
 
         <select id="filtro-canal">
@@ -118,22 +105,50 @@
           <option value="Sportv">Sportv</option>
           <option value="Premiere">Premiere</option>
           <option value="ESPN">ESPN</option>
-          <option value="ESPN 2">ESPN 2</option>
-          <option value="ESPN 4">ESPN 4</option>
           <option value="Disney+">Disney+</option>
-          <option value="Star+">Star+</option>
-          <option value="Amazon Prime Video">Amazon Prime Video</option>
-          <option value="RedeTV">RedeTV</option>
-          <option value="Youtube">YouTube (CazéTV, GoatBR, CBFSTV...)</option>
-          <option value="Nosso Futebol">Nosso Futebol</option>
-          <option value="DAZN">DAZN</option>
-          <option value="TV Brasil">TV Brasil</option>
-          <option value="CBFSTV">CBFSTV</option>
+          <option value="YouTube">YouTube</option>
         </select>
+
+        <button onclick="mostrarJogos()">Ver Jogos</button>
       </div>
 
-      {{JOGOS_AQUI}}
+      <div id="jogos-container">
+        <!-- Exemplo de jogos -->
+        <div class="game" data-campeonato="Brasileirão" data-canal="Premiere">
+          <div class="info">16h00 – Fortaleza x Juventude – Brasileirão</div>
+          <div class="canal">Canal: Premiere</div>
+        </div>
+        <div class="game" data-campeonato="Premier League" data-canal="ESPN">
+          <div class="info">11h00 – Manchester City x Liverpool – Premier League</div>
+          <div class="canal">Canal: ESPN</div>
+        </div>
+        <div class="game" data-campeonato="La Liga" data-canal="Disney+">
+          <div class="info">13h30 – Girona x Villarreal – La Liga</div>
+          <div class="canal">Canal: Disney+</div>
+        </div>
+        <div class="game" data-campeonato="Bundesliga" data-canal="YouTube">
+          <div class="info">10h30 – Bayern x Dortmund – Bundesliga</div>
+          <div class="canal">Canal: YouTube</div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    function mostrarJogos() {
+      const campeonato = document.getElementById("filtro-campeonato").value.toLowerCase();
+      const canal = document.getElementById("filtro-canal").value.toLowerCase();
+      const jogos = document.querySelectorAll(".game");
+
+      jogos.forEach(jogo => {
+        const camp = jogo.getAttribute("data-campeonato").toLowerCase();
+        const can = jogo.getAttribute("data-canal").toLowerCase();
+        const mostra =
+          (campeonato === "todos" || camp.includes(campeonato)) &&
+          (canal === "todos" || can.includes(canal));
+        jogo.style.display = mostra ? "block" : "none";
+      });
+    }
+  </script>
 </body>
 </html>
