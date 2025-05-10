@@ -1,57 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Jogos na TV Hoje</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0 }
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      color: #fff;
-      background-image: url('https://i.imgur.com/eQ2OVUF.png');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background: url('https://i.imgur.com/eQ2OVUF.png') center/cover fixed;
+      color: white;
     }
 
     .overlay {
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
       min-height: 100vh;
       padding: 40px 20px;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
     }
 
     h1 {
       text-align: center;
       color: #FFD700;
-      font-size: 36px;
       margin-bottom: 30px;
       text-shadow: 2px 2px 4px #000;
     }
 
-    .filters {
+    .buttons {
       text-align: center;
       margin-bottom: 30px;
     }
 
-    select {
+    .buttons button {
       background-color: #222;
       color: #FFD700;
       border: 2px solid #FFD700;
       padding: 10px 14px;
       border-radius: 8px;
-      margin: 10px 8px;
-      font-size: 16px;
+      margin: 6px 4px;
+      font-size: 15px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(255, 215, 0, 0.2);
       transition: 0.3s ease;
     }
 
-    select:hover {
+    .buttons button:hover {
       background-color: #333;
       box-shadow: 0 6px 14px rgba(255, 215, 0, 0.4);
       transform: scale(1.03);
@@ -74,75 +65,70 @@
     .canal {
       color: #7CFC00;
       font-weight: bold;
-      font-size: 15px;
-    }
-
-    @media(max-width:600px){
-      h1 { font-size: 28px; }
-      .info { font-size: 16px; }
-    }
-
-    h2 {
-      color: #FFD700;
-      margin-top: 30px;
-      font-size: 24px;
     }
   </style>
 </head>
 <body>
   <div class="overlay">
-    <div class="container">
-      <h1>📺 Jogos de Hoje na TV</h1>
+    <h1>📺 Jogos de Hoje na TV</h1>
 
-      <div class="filters">
-        <select id="filtro-canal" onchange="filtrarJogos()">
-          <option value="todos">Todos os Canais</option>
-          <option value="OneFootball">OneFootball</option>
-          <option value="ESPN">ESPN</option>
-          <option value="Disney+">Disney+</option>
-          <option value="Youtube">YouTube</option>
-        </select>
+    <div class="buttons">
+      <button onclick="filtrar('todos')">Ver Todos</button>
+      <button onclick="filtrar('2.Bundesliga')">2.Bundesliga</button>
+      <button onclick="filtrar('Inglês Feminino')">Inglês Feminino</button>
+      <button onclick="filtrar('La Liga')">La Liga</button>
+      <button onclick="filtrar('Disney+')">Disney+</button>
+      <button onclick="filtrar('OneFootball')">OneFootball</button>
+      <button onclick="filtrar('YouTube')">YouTube</button>
+    </div>
+
+    <div id="jogos">
+
+      <div class="game" data-campeonato="2.Bundesliga" data-canal="OneFootball">
+        <div class="info">08h00 – Fortuna Düsseldorf x Schalke 04 – 2.Bundesliga</div>
+        <div class="canal">Canal: OneFootball</div>
+      </div>
+      <div class="game" data-campeonato="2.Bundesliga" data-canal="OneFootball">
+        <div class="info">08h00 – Paderborn x Magdeburg – 2.Bundesliga</div>
+        <div class="canal">Canal: OneFootball</div>
+      </div>
+      <div class="game" data-campeonato="Inglês Feminino" data-canal="Disney+">
+        <div class="info">08h30 – Arsenal x Manchester United – Inglês Feminino</div>
+        <div class="canal">Canal: Disney+</div>
+      </div>
+      <div class="game" data-campeonato="Inglês Feminino" data-canal="ESPN e Disney+">
+        <div class="info">08h30 – Chelsea x Liverpool – Inglês Feminino</div>
+        <div class="canal">Canal: ESPN e Disney+</div>
+      </div>
+      <div class="game" data-campeonato="La Liga" data-canal="ESPN 2 e Disney+">
+        <div class="info">09h00 – Valencia x Getafe – La Liga</div>
+        <div class="canal">Canal: ESPN 2 e Disney+</div>
+      </div>
+      <div class="game" data-campeonato="Serie A" data-canal="Disney+">
+        <div class="info">10h00 – Como 1907 x Cagliari – Serie A</div>
+        <div class="canal">Canal: Disney+</div>
+      </div>
+      <div class="game" data-campeonato="Bundesliga" data-canal="Youtube.com/@CazeTV e OneFootball">
+        <div class="info">10h30 – Werder Bremen x RB Leipzig – Bundesliga</div>
+        <div class="canal">Canal: Youtube.com/@CazeTV e OneFootball</div>
       </div>
 
-      <!-- JOGOS ORGANIZADOS POR CAMPEONATO -->
-      <div id="jogos">
-
-        <h2>2.Bundesliga</h2>
-        <div class="game" data-canal="OneFootball"><div class="info">08h00 – Fortuna Düsseldorf x Schalke 04</div><div class="canal">Canal: OneFootball</div></div>
-        <div class="game" data-canal="OneFootball"><div class="info">08h00 – Paderborn x Magdeburg</div><div class="canal">Canal: OneFootball</div></div>
-        <div class="game" data-canal="OneFootball"><div class="info">08h00 – Elversberg x Eintracht Braunschweig</div><div class="canal">Canal: OneFootball</div></div>
-
-        <h2>Inglês Feminino</h2>
-        <div class="game" data-canal="ESPN e Disney+"><div class="info">08h30 – Chelsea x Liverpool</div><div class="canal">Canal: ESPN e Disney+</div></div>
-        <div class="game" data-canal="Disney+"><div class="info">08h30 – Arsenal x Manchester United</div><div class="canal">Canal: Disney+</div></div>
-
-        <h2>EFL League One</h2>
-        <div class="game" data-canal="Disney+"><div class="info">08h30 – Leyton Orient x Stockport County</div><div class="canal">Canal: Disney+</div></div>
-
-        <h2>La Liga</h2>
-        <div class="game" data-canal="ESPN 2 e Disney+"><div class="info">09h00 – Valencia x Getafe</div><div class="canal">Canal: ESPN 2 e Disney+</div></div>
-
-        <h2>Ekstraklasa</h2>
-        <div class="game" data-canal="OneFootball"><div class="info">09h45 – Radomiak Radom x Pogon Szczecin</div><div class="canal">Canal: OneFootball</div></div>
-
-        <h2>Serie A</h2>
-        <div class="game" data-canal="Disney+"><div class="info">10h00 – Como 1907 x Cagliari</div><div class="canal">Canal: Disney+</div></div>
-
-        <h2>Bundesliga</h2>
-        <div class="game" data-canal="Youtube.com/@CazeTV e OneFootball"><div class="info">10h30 – Werder Bremen x RB Leipzig</div><div class="canal">Canal: Youtube.com/@CazeTV e OneFootball</div></div>
-      </div>
     </div>
   </div>
 
   <script>
-    function filtrarJogos() {
-      const canal = document.getElementById("filtro-canal").value.toLowerCase();
-      const jogos = document.querySelectorAll(".game");
-
+    function filtrar(filtro) {
+      const jogos = document.querySelectorAll('.game');
       jogos.forEach(jogo => {
-        const canalDoJogo = jogo.getAttribute("data-canal").toLowerCase();
-        const mostrar = canal === "todos" || canalDoJogo.includes(canal);
-        jogo.style.display = mostrar ? "block" : "none";
+        const camp = jogo.getAttribute('data-campeonato');
+        const canal = jogo.getAttribute('data-canal');
+        if (filtro === 'todos') {
+          jogo.style.display = 'block';
+        } else if (camp.includes(filtro) || canal.includes(filtro)) {
+          jogo.style.display = 'block';
+        } else {
+          jogo.style.display = 'none';
+        }
       });
     }
   </script>
