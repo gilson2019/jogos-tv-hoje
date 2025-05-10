@@ -1,27 +1,33 @@
-name: Atualizar Jogos Diariamente 
+name: Atualizar Jogos Diariamente
 
 on:
   schedule:
-    - cron: '0 9 * * *' # roda às 06h horário de Brasília
+    - cron: '0 9 * * *' # Roda todo dia às 06h da manhã (horário de Brasília)
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: Instalar Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-    - name: Instalar dependências
-      run: pip install requests beautifulsoup4
-    - name: Executar scraper
-      run: python scraper.py
-    - name: Salvar resultado
-      run: |
-        git config --global user.name "github-actions"
-        git config --global user.email "actions@github.com"
-        git add index.html
-        git commit -m "Atualização automática dos jogos"
-        git push
+      - uses: actions/checkout@v3
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Instalar dependências
+        run: pip install requests beautifulsoup4
+
+      - name: Executar scraper
+        run: python scraper.py
+
+      - name: Salvar resultado
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add index.html || echo "Nada para adicionar"
+          git diff --cached --quiet || git commit -m "Atualização automática dos jogos"
+          git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main
