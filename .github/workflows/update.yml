@@ -1,4 +1,4 @@
-name: Atualizar Jogos Diariamente
+name: Atualizar Jogos Diariamente IMPERIAL
 
 on:
   schedule:
