@@ -1,32 +1,18 @@
-import requests
-from bs4 import BeautifulSoup
+canal_links = {
+    "Premiere": "https://globoplay.globo.com/premiere/",
+    "ESPN": "https://www.espn.com.br/watch/",
+    "Amazon Prime": "https://www.primevideo.com/",
+    "SporTV": "https://globoplay.globo.com/sportv/",
+}
 
-def fetch_jogos():
-    url = "https://mantosdofutebol.com.br/guia-de-jogos-tv-hoje-ao-vivo/"
-    headers = {"User-Agent": "Mozilla/5.0"}
-    res = requests.get(url, headers=headers)
-    soup = BeautifulSoup(res.text, 'html.parser')
+for jogo in jogos:
+    canal = jogo['canal']
+    canal_link = canal_links.get(canal, "#")
 
-    jogos = []
-    for h in soup.find_all(['h2', 'h3']):
-        title = h.get_text(strip=True)
-        if ' x ' in title or '–' in title:
-            canal = "Canal não informado"
-            next_p = h.find_next_sibling('p')
-            if next_p and ('Canal:' in next_p.text or 'Canais:' in next_p.text):
-                canal = next_p.get_text(strip=True).replace('Canais:', '').replace('Canal:', '').strip()
-            jogos.append((title, canal))
-    return jogos
-
-def gerar_html(jogos):
-    bloco = ""
-    for jogo, canal in jogos:
-        bloco += f'<div class="game"><div class="info">{jogo}</div><div class="canal">Canais: {canal}</div></div>\n'
-    return bloco
-
-if __name__ == "__main__":
-    with open("template.html", "r", encoding="utf-8") as f:
-        template = f.read()
-    html_final = template.replace("{{JOGOS_AQUI}}", gerar_html(fetch_jogos()))
-    with open("index.html", "w", encoding="utf-8") as f:
-        f.write(html_final)
+    jogos_html += f"""
+    <div class="card p-3" data-league="{jogo['campeonato']}" data-canal="{canal}">
+      <div class="card-title">{jogo['hora']} - {jogo['time1']} x {jogo['time2']}</div>
+      <div>Campeonato: {jogo['campeonato']}</div>
+      <div class="canal">Canal: <a href="{canal_link}" target="_blank">{canal}</a></div>
+    </div>
+    """
