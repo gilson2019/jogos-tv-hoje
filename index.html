@@ -4,18 +4,21 @@
   <meta charset="UTF-8">
   <title>Jogos na TV Hoje</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0 }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: Arial, sans-serif;
       color: #fff;
-      background-image: url('https://gilson2019.github.io/jogos-tv-hoje/campo-4k.png');
+      background: #111 url('https://gilson2019.github.io/jogos-tv-hoje/campo-4k.png') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
 
     .overlay {
-      background-color: rgba(0, 0, 0, 0.75);
+      background-color: rgba(0, 0, 0, 0.85);
       padding: 40px 20px;
       min-height: 100vh;
     }
@@ -30,7 +33,7 @@
       color: #FFD700;
       font-size: 36px;
       margin-bottom: 40px;
-      text-shadow: 2px 2px 4px #000;
+      text-shadow: 2px 2px 6px #000;
     }
 
     .game {
@@ -38,8 +41,14 @@
       border-left: 5px solid #FFD700;
       padding: 15px 20px;
       margin-bottom: 16px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px rgba(0,0,0,0.4);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .game:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 16px rgba(255, 215, 0, 0.5);
     }
 
     .info {
@@ -53,9 +62,13 @@
       font-size: 15px;
     }
 
-    @media(max-width:600px){
-      h1 { font-size: 28px; }
-      .info { font-size: 16px; }
+    @media(max-width:600px) {
+      h1 {
+        font-size: 28px;
+      }
+      .info {
+        font-size: 16px;
+      }
     }
   </style>
 </head>
