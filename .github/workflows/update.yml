@@ -22,20 +22,12 @@ jobs:
       - name: Executar scraper
         run: python scraper.py
 
-      - name: Instalar Playwright e dependências
-        run: |
-          pip install playwright
-          playwright install
-
-      - name: Gerar imagem do banner do dia
-        run: python generate_image.py
-
       - name: Salvar resultado
         env:
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
-          git add index.html banner-dia.png || echo "Nada para adicionar"
+          git add index.html || echo "Nada para adicionar"
           git diff --cached --quiet || git commit -m "Atualização automática dos jogos"
           git push https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git HEAD:main
